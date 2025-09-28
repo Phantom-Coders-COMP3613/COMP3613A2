@@ -1,5 +1,17 @@
-from App.models import User
+from App.models import User, Student, Staff
 from App.database import db
+
+def create_student(username, password):
+    newstudent = Student(username=username, password=password)
+    db.session.add(newstudent)
+    db.session.commit()
+    return newstudent
+
+def create_staff(username, password):
+    newstaff = Staff(username=username, password=password)
+    db.session.add(newstaff)
+    db.session.commit()
+    return newstaff
 
 def create_user(username, password):
     newuser = User(username=username, password=password)
