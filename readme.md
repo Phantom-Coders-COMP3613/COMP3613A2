@@ -2,9 +2,7 @@
 $ flask init
 # Initalizes dummy Student, Staff, Confirmation, and Accolade Objects in the database to test the various commands.
 
-'''
-STUDENT
-'''
+## '''STUDENT'''
 $ flask student create [username: String] [password: String]
 # (EXTRA) Creates a Student with a Username and Password. (EXTRA)
 
@@ -17,9 +15,7 @@ $ flask student view_accolades [student_id: int]
 $ flask student view_leaderboard
 # (REQUIRED) Shows a list of the students with the most hours, descending to the one with the least.
 
-'''
-STAFF
-'''
+## '''STAFF'''
 $ flask staff create [username: String] [password: String]
 # (EXTRA) Creates a Staff with a Username and Password.
 
