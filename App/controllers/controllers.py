@@ -5,7 +5,7 @@ from App.database import db
 def log_hours(confirmation_id, status):
     confirmation = Confirmation.query.get(confirmation_id)
     if not confirmation:
-        print(f'Confirmation{confirmation_id} not found.')
+        print(f'Confirmation {confirmation_id} not found.')
         return
 
     student = Student.query.get(confirmation.studentId)
@@ -15,7 +15,7 @@ def log_hours(confirmation_id, status):
 
     if status == "Y":
         student.hours += confirmation.hours
-        print(f'Confirmation {confirmation.confirmationId} ')
+        print(f'Confirmation {confirmation.confirmationId} approved.')
         db.session.delete(confirmation)
     elif status == "N":
         print(f'Confirmation {confirmation.confirmationId} rejected.')

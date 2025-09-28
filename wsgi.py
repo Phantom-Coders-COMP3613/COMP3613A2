@@ -67,8 +67,9 @@ def create_staff_command(username, password):
 # (Staff) Log hours for student
 @staff_cli.command("log_hours", help="Log hours for student")
 @click.argument("confirmation_id", default="1")
-def log_hours_command(confirmation_id):
-    log_hours(confirmation_id)
+@click.argument("status", default="Y")
+def log_hours_command(confirmation_id, status):
+    log_hours(confirmation_id, status)
 
 # (Extra) View all pending confirmations
 @staff_cli.command("view_confirmations", help="View all pending confirmations")
@@ -79,6 +80,8 @@ def view_confirmations_command():
 @staff_cli.command("view_leaderboard", help="View Student Leaderboard")
 def view_leaderboard_command():
     view_leaderboard()
+
+app.cli.add_command(staff_cli)
 
 '''
 Test Commands
