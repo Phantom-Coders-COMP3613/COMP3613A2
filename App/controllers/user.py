@@ -13,6 +13,16 @@ def create_staff(username, password):
     db.session.commit()
     return newstaff
 
+def view_students():
+    students = Student.query.all()
+    for student in students:
+        print(student)
+
+def view_staff():
+    staffs = Staff.query.all()
+    for staff in staffs:
+        print(staff)
+
 def create_user(username, password):
     newuser = User(username=username, password=password)
     db.session.add(newuser)

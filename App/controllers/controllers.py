@@ -77,9 +77,3 @@ def view_confirmations():
     confirmations = Confirmation.query.all()
     for confirmation in confirmations:
         print(confirmation)
-
-# (Staff) View all students
-def view_students():
-    students = Student.query.all()
-    for student in students:
-        print(student)
