@@ -1,6 +1,6 @@
 # Flask Commands
 $ flask init
-# Initalizes dummy Student, Staff, Confirmation, and Accolade Objects in the database to test the various commands.
+## Initalizes dummy Student, Staff, Confirmation, and Accolade Objects in the database to test the various commands.
 
 # '''STUDENT'''
 $ flask student create [username: String] [password: String]
