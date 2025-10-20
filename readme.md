@@ -3,8 +3,10 @@ $ flask init
 ## Initalizes dummy Student, Staff, Confirmation, and Accolade Objects in the database to test the various commands.
 
 # '''STUDENT'''
+```bash
 $ flask student create [username: String] [password: String]
-## (EXTRA) Creates a Student with a Username and Password. (EXTRA)
+```
+(EXTRA) Creates a Student with a Username and Password.
 
 $ flask student request_confirmation [student_id: int] [hours: float]
 ## (REQUIRED) Creates a Confirmation with hours attached and links it to the associated student_id.

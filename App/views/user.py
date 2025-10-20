@@ -25,6 +25,7 @@ def create_user_action():
     return redirect(url_for('user_views.get_user_page'))
 
 @user_views.route('/api/users', methods=['GET'])
+@jwt_required()
 def get_users_action():
     users = get_all_users_json()
     return jsonify(users)
