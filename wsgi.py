@@ -5,7 +5,7 @@ from App.controllers.user import create_staff, create_student, view_staff, view_
 from App.database import db, get_migrate
 from App.models import User
 from App.main import create_app
-from App.controllers import ( create_user, get_all_users_json, get_all_users, initialize, request_confirmation, view_leaderboard, view_accolades, log_hours, view_confirmations )
+from App.controllers import ( create_user, get_all_users_json, get_all_users, initialize, request_confirmation, view_leaderboard, view_accolades, log_confirmation, deny_confirmation, view_confirmations )
 
 
 # This commands file allow you to create convenient CLI commands for testing controllers
@@ -64,12 +64,17 @@ staff_cli = AppGroup('staff', help='Staff object commands')
 def create_staff_command(username, password):
     create_staff(username, password)
 
-# (Staff) Log hours for student
-@staff_cli.command("log_hours", help="Log hours for student")
+# (Staff) Log confirmation for student
+@staff_cli.command("log_confirmation", help="Log confirmation for student")
 @click.argument("confirmation_id", default="1")
-@click.argument("status", default="Y")
-def log_hours_command(confirmation_id, status):
-    log_hours(confirmation_id, status)
+def log_confirmation_command(confirmation_id):
+    log_confirmation(confirmation_id)
+
+# (Staff) Log confirmation for student
+@staff_cli.command("deny_confirmation", help="Deny confirmation for student")
+@click.argument("confirmation_id", default="1")
+def deny_confirmation_command(confirmation_id):
+    deny_confirmation(confirmation_id)
 
 # (Extra) View all pending confirmations
 @staff_cli.command("view_confirmations", help="View all pending confirmations")

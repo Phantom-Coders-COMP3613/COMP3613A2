@@ -1,8 +1,8 @@
 from App.models import Student, Staff, Confirmation, Accolades
 from App.database import db
 
-# (Staff) Log hours for student
-def log_hours(confirmation_id, status):
+# (Staff) Log confirmation for student
+def log_confirmation(confirmation_id):
     confirmation = Confirmation.query.get(confirmation_id)
     if not confirmation:
         print(f'Confirmation {confirmation_id} not found.')
@@ -13,14 +13,29 @@ def log_hours(confirmation_id, status):
         print(f'Student {confirmation.studentId} not found.')
         return
 
-    if status == "Y":
-        student.hours += confirmation.hours
-        print(f'Confirmation {confirmation.confirmationId} approved.')
-        db.session.delete(confirmation)
-    elif status == "N":
-        print(f'Confirmation {confirmation.confirmationId} rejected.')
-        db.session.delete(confirmation)
-        db.session.commit()
+    student.hours += confirmation.hours
+    print(f'Confirmation {confirmation.confirmationId} approved.')
+    db.session.delete(confirmation)
+
+    update_accolades(student.studentId)
+    db.session.commit()
+    print(f'Logged {confirmation.hours} hours for student {student.username}.')
+
+# (Staff) Deny confirmation for student
+def deny_confirmation(confirmation_id):
+    confirmation = Confirmation.query.get(confirmation_id)
+    if not confirmation:
+        print(f'Confirmation {confirmation_id} not found.')
+        return
+    db.session.delete(confirmation)
+    db.session.commit()
+    print(f'Confirmation {confirmation.confirmationId} denied and removed.')
+
+# Update accolades
+def update_accolades(student_id):
+    student = Student.query.get(student_id)
+    if not student:
+        print(f'Student {student_id} not found.')
         return
 
     accolades = Accolades.query.filter_by(studentId=student.studentId).first()
@@ -28,15 +43,15 @@ def log_hours(confirmation_id, status):
         accolades = Accolades(studentId=student.studentId)
         db.session.add(accolades)
 
-    if student.hours >= 50 and not accolades.milestone50:
+    if student.hours >= 50:
         accolades.milestone50 = True
-    elif student.hours >= 25 and not accolades.milestone25:
+    if student.hours >= 25:
         accolades.milestone25 = True
-    elif student.hours >= 10 and not accolades.milestone10:
+    if student.hours >= 10:
         accolades.milestone10 = True
 
     db.session.commit()
-    print(f'Logged {confirmation.hours} hours for student {student.username}.')
+    print(f'Accolades for student {student.username} updated.')
 
 # (Student) Request confirmation of hours (by staff)
 def request_confirmation(student_id, hours):
