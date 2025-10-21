@@ -1,6 +1,6 @@
 from .user import create_user, create_staff, create_student
 from App.database import db
-from .controllers import log_hours, request_confirmation
+from .controllers import log_confirmation, deny_confirmation, request_confirmation
 
 
 def initialize():
@@ -22,7 +22,7 @@ def initialize():
     request_confirmation(1, 5.0)
     request_confirmation(3, 3.5)
 
-    log_hours(1, "Y")
-    log_hours(2, "Y")
-    log_hours(3, "N")
-    log_hours(4, "Y")
+    log_confirmation(1)
+    log_confirmation(2)
+    deny_confirmation(3)
+    log_confirmation(4)
