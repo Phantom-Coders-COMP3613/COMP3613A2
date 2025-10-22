@@ -1,6 +1,6 @@
 from .user import create_user, create_staff, create_student
 from App.database import db
-from .controllers import log_confirmation, deny_confirmation, request_confirmation
+from .confirmation import log_confirmation, deny_confirmation, request_confirmation
 
 
 def initialize():
