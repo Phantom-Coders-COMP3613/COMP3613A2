@@ -7,6 +7,7 @@ class Confirmation(db.Model):
     confirmationId = db.Column(db.Integer, primary_key=True)
     studentId = db.Column(db.Integer, db.ForeignKey('student.studentId'), nullable=False)
     hours = db.Column(db.Float, nullable=False)
+    status = db.Column(db.String(20), default='pending')
 
     def __repr__(self):
         return f'<Confirmation {self.confirmationId} with {self.hours} hours made by student {self.studentId}>'

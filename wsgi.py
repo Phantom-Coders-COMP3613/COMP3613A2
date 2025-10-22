@@ -43,12 +43,23 @@ def request_confirmation_command(student_id, hours):
 @student_cli.command("view_accolades", help="View accolades (10/25/50 hours milestones)")
 @click.argument("student_id", default="1")
 def view_accolades_command(student_id):
-    view_accolades(student_id)
+    accolade = view_accolades(student_id)
+    if accolade.milestone50:
+        print("Milestone 50 hours achieved!")
+    elif accolade.milestone25:
+        print("Milestone 25 hours achieved!")
+    elif accolade.milestone10:
+        print("Milestone 10 hours achieved!")
+    else:
+        print("No milestones achieved yet.")
 
 # View Student Leaderboard
 @student_cli.command("view_leaderboard", help="View Student Leaderboard")
 def view_leaderboard_command():
-    view_leaderboard()
+    leaderboard = view_leaderboard()
+    print("Student Leaderboard:")
+    for student in leaderboard:
+        print(f"{student.username}: {student.hours} hours")
 
 app.cli.add_command(student_cli)
 

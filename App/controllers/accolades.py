@@ -21,16 +21,10 @@ def update_accolades(student_id):
         accolades.milestone10 = True
 
     db.session.commit()
-    print(f'Accolades for student {student.username} updated.')
+    return None
 
 # (Student) View accolades (10/25/50 hours milestones)
 def view_accolades(student_id):
-    accolade = Accolades.query.filter_by(studentId=student_id).first()
-    if accolade.milestone50:
-        print("Milestone 50 hours achieved!")
-    elif accolade.milestone25:
-        print("Milestone 25 hours achieved!")
-    elif accolade.milestone10:
-        print("Milestone 10 hours achieved!")
-    else:
-        print("No milestones achieved yet.")
+    student = Student.query.get(student_id)
+    update_accolades(student.studentId)
+    return Accolades.query.filter_by(studentId=student_id).first()

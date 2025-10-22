@@ -47,4 +47,16 @@ class Staff(User):
 
     def __repr__(self):
         return f'<Staff {self.username}>'
+    
+    def log_confirmation(self, student, confirmation):
+        student.hours += confirmation.hours
+        confirmation.status = 'logged'
+        print(f'Confirmation {confirmation.confirmationId} logged.')
+        db.session.commit()
 
+        print(f'Logged {confirmation.hours} hours for student {student.username}.')
+
+    def deny_confirmation(self, confirmation):
+        confirmation.status = 'denied'
+        db.session.commit()
+        print(f'Confirmation {confirmation.confirmationId} denied.')

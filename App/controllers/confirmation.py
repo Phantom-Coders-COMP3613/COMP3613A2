@@ -1,42 +1,32 @@
-from App.models import Student, Confirmation
+from App.models import Student, Confirmation, Staff
 from App.database import db
-from .accolades import update_accolades
 
 # (Staff) View all pending confirmations
 def view_confirmations():
-    confirmations = Confirmation.query.all()
+    confirmations = Confirmation.query.filter_by(status='pending').all()
     for confirmation in confirmations:
         print(confirmation)
 
 # (Staff) Log confirmation for student
-def log_confirmation(confirmation_id):
+def staff_log_confirmation(staff_id, confirmation_id):
     confirmation = Confirmation.query.get(confirmation_id)
-    if not confirmation:
-        print(f'Confirmation {confirmation_id} not found.')
-        return
-
+    staff = Staff.query.get(staff_id)
     student = Student.query.get(confirmation.studentId)
-    if not student:
-        print(f'Student {confirmation.studentId} not found.')
-        return
+    if not confirmation or not staff or not student:
+        return None
 
-    student.hours += confirmation.hours
-    print(f'Confirmation {confirmation.confirmationId} approved.')
-    db.session.delete(confirmation)
-
-    update_accolades(student.studentId)
-    db.session.commit()
-    print(f'Logged {confirmation.hours} hours for student {student.username}.')
+    staff.log_confirmation(student, confirmation)
+    return confirmation
 
 # (Staff) Deny confirmation for student
-def deny_confirmation(confirmation_id):
+def staff_deny_confirmation(staff_id,confirmation_id):
     confirmation = Confirmation.query.get(confirmation_id)
-    if not confirmation:
-        print(f'Confirmation {confirmation_id} not found.')
-        return
-    db.session.delete(confirmation)
-    db.session.commit()
-    print(f'Confirmation {confirmation.confirmationId} denied and removed.')
+    staff = Staff.query.get(staff_id)
+    if not confirmation or not staff:
+        return None
+
+    staff.deny_confirmation(confirmation)
+    return confirmation
 
 # (Student) Request confirmation of hours (by staff)
 def request_confirmation(student_id, hours):
