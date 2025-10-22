@@ -70,7 +70,7 @@ def create_staff_command(username, password):
 def log_confirmation_command(confirmation_id):
     log_confirmation(confirmation_id)
 
-# (Staff) Log confirmation for student
+# (Staff) Deny confirmation for student
 @staff_cli.command("deny_confirmation", help="Deny confirmation for student")
 @click.argument("confirmation_id", default="1")
 def deny_confirmation_command(confirmation_id):

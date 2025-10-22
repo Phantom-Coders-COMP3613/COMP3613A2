@@ -11,6 +11,33 @@ def login(username, password):
     return create_access_token(identity=str(user.id))
   return None
 
+def login_required(required_class):
+  """
+  Custom decorator that extends jwt_required to verify if current_user is an instance of the specified class.
+  
+  Args:
+    required_class: The class that the current_user must be an instance of
+    
+  Returns:
+    Decorator function that can be applied to routes
+    
+  Raises:
+    401 Unauthorized if user is not authenticated or not an instance of required_class
+  """
+  def decorator(f):
+    @wraps(f)
+    @jwt_required()
+    def decorated_function(*args, **kwargs):
+      # Check if current_user is an instance of the required class
+      if not isinstance(current_user, required_class):
+        return jsonify({
+          'error': 'Unauthorized', 
+          'message': f'User must be an instance of {required_class.__name__}'
+        }), 401
+      
+      return f(*args, **kwargs)
+    return decorated_function
+  return decorator
 
 def setup_jwt(app):
   jwt = JWTManager(app)

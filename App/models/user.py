@@ -24,3 +24,27 @@ class User(db.Model):
         """Check hashed password."""
         return check_password_hash(self.password, password)
 
+class Student(User):
+    __tablename__ = 'student'
+    studentId = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    hours = db.Column(db.Float, default=0.0)
+
+    accolades = db.relationship('Accolades', backref='student', uselist=False)
+    confirmation = db.relationship('Confirmation', backref='student', lazy=True)
+
+    def __init__(self, username, password):
+        super().__init__(username, password)
+
+    def __repr__(self):
+        return f'<Student {self.username} - Hours {self.hours}>'
+
+class Staff(User):
+    __tablename__ = 'staff'
+    staffId = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+
+    def __init__(self, username, password):
+        super().__init__(username, password)
+
+    def __repr__(self):
+        return f'<Staff {self.username}>'
+
