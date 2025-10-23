@@ -52,5 +52,5 @@ def empty_db():
     yield app.test_client()
     db.drop_all()
 
-class UsersIntegrationTests(unittest.TestCase):
+# class UsersIntegrationTests(unittest.TestCase):
 # not in the scope of the assignment
