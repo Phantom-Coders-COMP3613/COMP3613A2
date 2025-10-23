@@ -72,6 +72,11 @@ class Staff(User):
     def __repr__(self):
         return f'<Staff {self.username}>'
     
+    def get_json(self):
+        json_data = super().get_json()
+        json_data['staff_id'] = self.staffId
+        return json_data
+    
     def log_confirmation(self, student, confirmation):
         student.hours += confirmation.hours
         confirmation.status = 'logged'
