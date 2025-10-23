@@ -15,7 +15,7 @@ user_views = Blueprint('user_views', __name__, template_folder='../templates')
 @user_views.route('/api/students', methods=['POST'])
 def create_student_api():
     data = request.json
-    student = create_student(data['username'], data['password'], data['student_id'])
+    student = create_student(data['username'], data['password'])
     if student:
         return jsonify({'message': f'Student created successfully with ID: {student.id}'}), 201
     return jsonify({'error': 'Failed to create student'}), 400
