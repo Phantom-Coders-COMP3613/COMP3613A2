@@ -4,37 +4,29 @@ from flask_jwt_extended import jwt_required, current_user as jwt_current_user
 from.index import index_views
 
 from App.controllers import (
-    create_user,
-    get_all_users,
-    get_all_users_json,
-    jwt_required
+    jwt_required,
+    login_required,
+    create_staff,
+    create_student
 )
 
 user_views = Blueprint('user_views', __name__, template_folder='../templates')
 
-@user_views.route('/users', methods=['GET'])
-def get_user_page():
-    users = get_all_users()
-    return render_template('users.html', users=users)
-
-@user_views.route('/users', methods=['POST'])
-def create_user_action():
-    data = request.form
-    flash(f"User {data['username']} created!")
-    create_user(data['username'], data['password'])
-    return redirect(url_for('user_views.get_user_page'))
-
-@user_views.route('/api/users', methods=['GET'])
-@jwt_required()
-def get_users_action():
-    users = get_all_users_json()
-    return jsonify(users)
-
-@user_views.route('/api/users', methods=['POST'])
-def create_user_endpoint():
+@user_views.route('/api/students', methods=['POST'])
+def create_student_api():
     data = request.json
-    user = create_user(data['username'], data['password'])
-    return jsonify({'message': f"user {user.username} created with id {user.id}"})
+    student = create_student(data['username'], data['password'], data['student_id'])
+    if student:
+        return jsonify({'message': f'Student created successfully with ID: {student.id}'}), 201
+    return jsonify({'error': 'Failed to create student'}), 400
+
+@user_views.route('/api/staff', methods=['POST'])
+def create_staff_api():
+    data = request.json
+    staff = create_staff(data['username'], data['password'], data['staff_id'])
+    if staff:
+        return jsonify({'message': f'Staff created successfully with ID: {staff.id}'}), 201
+    return jsonify({'error': 'Failed to create staff'}), 400
 
 @user_views.route('/static/users', methods=['GET'])
 def static_user_page():

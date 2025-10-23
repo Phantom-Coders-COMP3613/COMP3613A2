@@ -1,4 +1,6 @@
-from flask_jwt_extended import create_access_token, jwt_required, JWTManager, get_jwt_identity, verify_jwt_in_request
+from flask_jwt_extended import create_access_token, current_user, jwt_required, JWTManager, get_jwt_identity, verify_jwt_in_request
+from flask import jsonify
+from functools import wraps
 
 from App.models import User
 from App.database import db

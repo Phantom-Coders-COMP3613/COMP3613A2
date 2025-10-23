@@ -2,10 +2,19 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from App.database import db
 
 class User(db.Model):
+    __tablename__ = 'user'
+    
     id = db.Column(db.Integer, primary_key=True)
     username =  db.Column(db.String(20), nullable=False, unique=True)
     password = db.Column(db.String(256), nullable=False)
-
+    user_type = db.Column(db.String(20), nullable=False)
+    
+    __mapper_args__ = {
+        'polymorphic_identity': 'user',
+        'polymorphic_on': user_type,
+        'with_polymorphic': '*'
+    }
+    
     def __init__(self, username, password):
         self.username = username
         self.set_password(password)
@@ -26,24 +35,39 @@ class User(db.Model):
 
 class Student(User):
     __tablename__ = 'student'
-    studentId = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     hours = db.Column(db.Float, default=0.0)
 
     accolades = db.relationship('Accolades', backref='student', uselist=False)
     confirmation = db.relationship('Confirmation', backref='student', lazy=True)
 
+    __mapper_args__ = {
+        'polymorphic_identity': 'student'
+    }
+    
     def __init__(self, username, password):
         super().__init__(username, password)
 
     def __repr__(self):
         return f'<Student {self.username} - Hours {self.hours}>'
+    
+    def get_json(self):
+        json_data = super().get_json()
+        json_data['user_type'] = 'customer'
+        return json_data
 
 class Staff(User):
     __tablename__ = 'staff'
-    staffId = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    staffId = db.Column(db.String(20), unique=True, nullable=False)
 
-    def __init__(self, username, password):
+    __mapper_args__ = {
+        'polymorphic_identity': 'staff'
+    }
+    
+    def __init__(self, username, password, staff_id):
         super().__init__(username, password)
+        self.staffId = staff_id
 
     def __repr__(self):
         return f'<Staff {self.username}>'

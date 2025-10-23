@@ -1,4 +1,4 @@
-from App.models import Student, Confirmation, Staff
+from App.models import Student, Confirmation, Staff, User
 from App.database import db
 
 # (Staff) View all pending confirmations
@@ -15,11 +15,15 @@ def staff_log_confirmation(staff_id, confirmation_id):
     if not confirmation or not staff or not student:
         return None
 
+    if confirmation.status != 'pending':
+        print(f'Confirmation {confirmation_id} is not pending.')
+        return None
+
     staff.log_confirmation(student, confirmation)
     return confirmation
 
 # (Staff) Deny confirmation for student
-def staff_deny_confirmation(staff_id,confirmation_id):
+def staff_deny_confirmation(staff_id, confirmation_id):
     confirmation = Confirmation.query.get(confirmation_id)
     staff = Staff.query.get(staff_id)
     if not confirmation or not staff:

@@ -3,3 +3,4 @@ from .auth import *
 from .initialize import *
 from .accolades import *
 from .confirmation import *
+from .leaderboard import *

@@ -5,7 +5,7 @@ from App.database import db
 class Confirmation(db.Model):
     __tablename__ = 'confirmation'
     confirmationId = db.Column(db.Integer, primary_key=True)
-    studentId = db.Column(db.Integer, db.ForeignKey('student.studentId'), nullable=False)
+    studentId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     hours = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(20), default='pending')
 

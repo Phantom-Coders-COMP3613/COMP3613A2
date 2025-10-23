@@ -8,16 +8,16 @@ def update_accolades(student_id):
         print(f'Student {student_id} not found.')
         return
 
-    accolades = Accolades.query.filter_by(studentId=student.studentId).first()
+    accolades = Accolades.query.filter_by(studentId=student.id).first()
     if not accolades:
-        accolades = Accolades(studentId=student.studentId)
+        accolades = Accolades(studentId=student.id)
         db.session.add(accolades)
 
-    if student.hours >= 50:
+    if student.hours >= 50 and not accolades.milestone50:
         accolades.milestone50 = True
-    if student.hours >= 25:
+    if student.hours >= 25 and not accolades.milestone25:
         accolades.milestone25 = True
-    if student.hours >= 10:
+    if student.hours >= 10 and not accolades.milestone10:
         accolades.milestone10 = True
 
     db.session.commit()
@@ -26,5 +26,5 @@ def update_accolades(student_id):
 # (Student) View accolades (10/25/50 hours milestones)
 def view_accolades(student_id):
     student = Student.query.get(student_id)
-    update_accolades(student.studentId)
+    update_accolades(student.id)
     return Accolades.query.filter_by(studentId=student_id).first()

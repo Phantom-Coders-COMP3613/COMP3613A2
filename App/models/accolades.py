@@ -5,7 +5,7 @@ from App.database import db
 class Accolades(db.Model):
     __tablename__ = 'accolades'
     accoladeId = db.Column(db.Integer, primary_key=True)
-    studentId = db.Column(db.Integer, db.ForeignKey('student.studentId'), nullable=False)
+    studentId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     milestone10 = db.Column(db.Boolean, default=False)
     milestone25 = db.Column(db.Boolean, default=False)
     milestone50 = db.Column(db.Boolean, default=False)
