@@ -34,11 +34,16 @@ def staff_deny_confirmation(staff_id, confirmation_id):
 
 # (Student) Request confirmation of hours (by staff)
 def request_confirmation(student_id, hours):
+    hours = int(hours)
     student = Student.query.get(student_id)
     if not student:
         print(f'Student {student_id} not found.')
         return
+    if hours < 0:
+        print(f'Enter a valid number (Range has to be more than 0).')
+        return
+
     confirmation = Confirmation(studentId=student_id, hours=hours)
-    db.session.add(confirmation)
-    db.session.commit()
-    print(f'Confirmation {confirmation.confirmationId} request for {hours} hours by student {student_id} created.')
+    student.request_confirm(confirmation)
+
+    return confirmation
