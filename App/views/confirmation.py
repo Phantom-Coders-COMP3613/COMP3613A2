@@ -1,11 +1,8 @@
 from flask import Blueprint, render_template, jsonify, request, send_from_directory
-<<<<<<< Updated upstream
 from flask_jwt_extended import jwt_required
 from App.models import Staff, Student, Confirmation
-=======
 from flask_jwt_extended import jwt_required, current_user
 from App.models import Staff, Confirmation
->>>>>>> Stashed changes
 from App.controllers import (
     staff_log_confirmation,
     login_required,
