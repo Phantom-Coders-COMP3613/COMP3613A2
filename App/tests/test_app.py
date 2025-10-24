@@ -128,7 +128,6 @@ class UserIntegrationTests(unittest.TestCase):
         assert accolades_data.milestone25 == False
         assert accolades_data.milestone50 == False
 
-
     def test_milestone_25_award(empty_db):
         """TEST: Ensures the 25-hour milestone is awarded after logging 25 hours."""
         
@@ -147,7 +146,6 @@ class UserIntegrationTests(unittest.TestCase):
         assert accolades_data.milestone10 == True 
         assert accolades_data.milestone25 == True
         assert accolades_data.milestone50 == False
-
 
     def test_milestone_50_award(empty_db):
         """TEST: Ensures the 50-hour milestone is awarded after logging 50 hours."""
