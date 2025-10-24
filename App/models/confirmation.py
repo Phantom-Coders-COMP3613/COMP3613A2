@@ -9,5 +9,10 @@ class Confirmation(db.Model):
     hours = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(20), default='pending')
 
+    def __init__(self, studentId, hours):
+        super().__init__()
+        self.studentId = studentId
+        self.hours = hours
+
     def __repr__(self):
         return f'<Confirmation {self.confirmationId} with {self.hours} hours made by student {self.studentId}>'

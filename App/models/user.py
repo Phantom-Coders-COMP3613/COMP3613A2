@@ -52,13 +52,13 @@ class Student(User):
     
     def get_json(self):
         json_data = super().get_json()
-        json_data['user_type'] = 'customer'
+        json_data['user_type'] = 'student'
         return json_data
     
-    def request_confirm(self,confirmation):
+    def request_confirmation(self, confirmation):
         db.session.add(confirmation)
         db.session.commit()
-        print('Your request has been logged.')
+        print(f'Confirmation {confirmation.confirmationId} has been logged.')
 
 class Staff(User):
     __tablename__ = 'staff'
