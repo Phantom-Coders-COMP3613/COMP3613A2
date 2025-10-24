@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, current_user
 from App.controllers import (
     staff_log_confirmation,
     login_required,
-    request_confirmation
+    student_request_confirmation
 )
 
 confirmation_views = Blueprint('confirmation_views', __name__, template_folder='../templates')
@@ -21,7 +21,7 @@ def log_confirmation_api(confirmationId):
 @login_required(Student)
 def request_confirm():
     data = request.json
-    confirmation = request_confirmation(student_id=data['student_id'], hours=data['hours'])
+    confirmation = student_request_confirmation(student_id=data['student_id'], hours=data['hours'])
     if not confirmation:
         return jsonify({'message': f'Error creating confirmation'}), 401
     return jsonify({'message': f'Confirmation pending'}), 202

@@ -33,6 +33,4 @@ def student_request_confirmation(student_id, hours):
         return
 
     confirmation = Confirmation(studentId=student_id, hours=hours)
-    student.request_confirmation(confirmation)
-
-    return confirmation
+    return student.request_confirmation(confirmation)

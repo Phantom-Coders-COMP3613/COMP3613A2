@@ -59,6 +59,7 @@ class Student(User):
         db.session.add(confirmation)
         db.session.commit()
         print(f'Confirmation {confirmation.confirmationId} has been logged.')
+        return confirmation
 
 class Staff(User):
     __tablename__ = 'staff'
@@ -79,6 +80,7 @@ class Staff(User):
     def get_json(self):
         json_data = super().get_json()
         json_data['staff_id'] = self.staffId
+        json_data['user_type'] = 'staff'
         return json_data
     
     def log_confirmation(self, student, confirmation):
