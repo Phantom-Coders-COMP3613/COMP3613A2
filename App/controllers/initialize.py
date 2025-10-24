@@ -1,6 +1,6 @@
 from .user import create_staff, create_student
 from App.database import db
-from .confirmation import staff_log_confirmation, staff_deny_confirmation, request_confirmation
+from .confirmation import staff_log_confirmation, request_confirmation
 
 
 def initialize():
@@ -18,11 +18,11 @@ def initialize():
     request_confirmation(2, 300.0)
     request_confirmation(1, 10.5)
     request_confirmation(3, 4.0)
-    request_confirmation(2, 2.0)
-    request_confirmation(1, 5.0)
-    request_confirmation(3, 3.5)
+    request_confirmation(2, 2.5)
+    request_confirmation(1, 500.0)
+    request_confirmation(3, 30.5)
 
     staff_log_confirmation(4, 1)
     staff_log_confirmation(5, 2)
-    staff_deny_confirmation(6, 3)
+    staff_log_confirmation(6, 3)
     staff_log_confirmation(4, 4)

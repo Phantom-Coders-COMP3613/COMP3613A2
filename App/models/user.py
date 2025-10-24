@@ -88,8 +88,3 @@ class Staff(User):
         db.session.commit()
 
         print(f'Logged {confirmation.hours} hours for student {student.username}.')
-
-    def deny_confirmation(self, confirmation):
-        confirmation.status = 'denied'
-        db.session.commit()
-        print(f'Confirmation {confirmation.confirmationId} denied.')
