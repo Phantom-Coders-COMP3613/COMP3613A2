@@ -22,24 +22,13 @@ def staff_log_confirmation(staff_id, confirmation_id):
     staff.log_confirmation(student, confirmation)
     return confirmation
 
-# (Staff) Deny confirmation for student
-def staff_deny_confirmation(staff_id, confirmation_id):
-    confirmation = Confirmation.query.get(confirmation_id)
-    staff = Staff.query.get(staff_id)
-    if not confirmation or not staff:
-        return None
-
-    staff.deny_confirmation(confirmation)
-    return confirmation
-
 # (Student) Request confirmation of hours (by staff)
 def request_confirmation(student_id, hours):
-    hours = int(hours)
     student = Student.query.get(student_id)
     if not student:
         print(f'Student {student_id} not found.')
         return
-    if hours < 0:
+    if float(hours) <= 0.0:
         print(f'Enter a valid number (Range has to be more than 0).')
         return
 
