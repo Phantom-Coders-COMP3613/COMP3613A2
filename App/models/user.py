@@ -12,7 +12,6 @@ class User(db.Model):
     __mapper_args__ = {
         'polymorphic_identity': 'user',
         'polymorphic_on': user_type,
-        'with_polymorphic': '*'
     }
     
     def __init__(self, username, password):
@@ -64,7 +63,7 @@ class Student(User):
 class Staff(User):
     __tablename__ = 'staff'
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    staffId = db.Column(db.String(20), unique=True, nullable=False)
+    staffId = db.Column(db.String(20), unique=True)
 
     __mapper_args__ = {
         'polymorphic_identity': 'staff'
