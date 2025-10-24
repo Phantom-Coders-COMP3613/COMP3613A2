@@ -12,7 +12,7 @@ from App.controllers import (
 
 user_views = Blueprint('user_views', __name__, template_folder='../templates')
 
-@user_views.route('/api/students', methods=['POST'])
+@user_views.route('/api/student', methods=['POST'])
 def create_student_api():
     data = request.json
     student = create_student(data['username'], data['password'])
@@ -23,7 +23,7 @@ def create_student_api():
 @user_views.route('/api/staff', methods=['POST'])
 def create_staff_api():
     data = request.json
-    staff = create_staff(data['username'], data['password'], data['staff_id'])
+    staff = create_staff(data['username'], data['password'], data['staffId'])
     if staff:
         return jsonify({'message': f'Staff created successfully with ID: {staff.id}'}), 201
     return jsonify({'error': 'Failed to create staff'}), 400
