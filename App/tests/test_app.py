@@ -96,6 +96,20 @@ class UserIntegrationTests(unittest.TestCase):
         assert request.hours == hours
         assert request.studentId == student_id
 
+    def test_staff_log_confirmation(empty_db):
+        """TEST: Ensures staff can log a student's confirmation and update hours."""
+        
+        student = create_student("teststudent2", "testpass2") 
+        staff = create_staff("teststaff", "staffpass", "S000")
+        
+        confirmation = student_request_confirmation(student.id, 15.0)
+        logged_confirmation = staff_log_confirmation(staff.id, confirmation.confirmationId)
+        updated_student = Student.query.get(student.id)
+        
+        assert isinstance(logged_confirmation, Confirmation)
+        assert logged_confirmation.status == "logged"
+        assert updated_student.hours == 15.0
+
     def test_milestone_10_award(empty_db):
         """TEST: Ensures the 10-hour milestone is awarded after logging 12 hours."""
         
