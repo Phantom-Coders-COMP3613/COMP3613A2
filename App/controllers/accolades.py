@@ -26,5 +26,8 @@ def update_accolades(student_id):
 # (Student) View accolades (10/25/50 hours milestones)
 def view_accolades(student_id):
     student = Student.query.get(student_id)
+    if not student:
+        return None # Explicitly return None if student not found
     update_accolades(student.id)
     return Accolades.query.filter_by(studentId=student_id).first()
+
