@@ -4,7 +4,7 @@ from flask.cli import with_appcontext, AppGroup
 from App.database import db, get_migrate
 from App.models import User
 from App.main import create_app
-from App.controllers import ( create_staff, create_student, initialize, request_confirmation, view_leaderboard, view_accolades, staff_log_confirmation, view_confirmations )
+from App.controllers import ( create_staff, create_student, initialize, student_request_confirmation, view_leaderboard, view_accolades, staff_log_confirmation, view_confirmations )
 
 
 # This commands file allow you to create convenient CLI commands for testing controllers
@@ -38,7 +38,7 @@ def create_student_command(username, password):
 @click.argument("student_id")
 @click.argument("hours")
 def request_confirmation_command(student_id, hours):
-    request_confirmation(student_id, hours)
+    student_request_confirmation(student_id, hours)
 
 # (Student) View accolades (10/25/50 hours milestones)
 @student_cli.command("view_accolades", help="View accolades (10/25/50 hours milestones)")

@@ -10,6 +10,10 @@ class Accolades(db.Model):
     milestone25 = db.Column(db.Boolean, default=False)
     milestone50 = db.Column(db.Boolean, default=False)
 
+    def __init__(self, studentId):
+        super().__init__()
+        self.studentId = studentId
+
     def __repr__(self):
         return f'<Accolades achieved by student {self.studentId}: 10 hours: {self.milestone10}, 25 hours: {self.milestone25}, 50 hours: {self.milestone50}>'
     

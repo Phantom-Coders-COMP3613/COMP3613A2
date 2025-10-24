@@ -23,7 +23,7 @@ def staff_log_confirmation(staff_id, confirmation_id):
     return confirmation
 
 # (Student) Request confirmation of hours (by staff)
-def request_confirmation(student_id, hours):
+def student_request_confirmation(student_id, hours):
     student = Student.query.get(student_id)
     if not student:
         print(f'Student {student_id} not found.')
@@ -33,6 +33,4 @@ def request_confirmation(student_id, hours):
         return
 
     confirmation = Confirmation(studentId=student_id, hours=hours)
-    student.request_confirm(confirmation)
-
-    return confirmation
+    return student.request_confirmation(confirmation)
