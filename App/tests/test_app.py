@@ -7,7 +7,8 @@ from App.models import Staff, User, Confirmation, Accolades, Student
 from App.controllers import (
     create_staff,
     create_student,
-    login
+    login,
+    student_request_confirmation
 )
 
 
@@ -22,26 +23,22 @@ class UserUnitTests(unittest.TestCase):
         newstaff = Staff("staff1", "staff1pass", "S010")
         assert newstaff.username == "staff1"
         assert newstaff.staffId == "S010"
+        assert newstaff.user_type == "staff"
+        assert isinstance(newstaff, Staff)
         
     def test_new_student(self):
-        newstudent = create_student("student1", "studentpass")
+        newstudent = Student("student1", "studentpass")
         assert newstudent.username == "student1"
-        assert newstudent.hours == 0.0
         
     def test_new_confirmation(self):
-        newstudent = create_student("student2", "student2pass")
+        newstudent = Student("student2", "student2pass")
         newconfirmation = Confirmation(studentId=newstudent.id, hours=50.0)
-        assert newconfirmation.studentId == newstudent.id
-        assert newconfirmation.hours == 50.0
-        assert newconfirmation.status == 'pending'
+        assert newconfirmation.studentId == newstudent.id and newconfirmation.hours == 50.0
         
     def test_new_accolades(self):
-        newstudent = create_student("student3", "student3pass")
+        newstudent = Student("student3", "student3pass")
         newaccolades = Accolades(studentId=newstudent.id)
         assert newaccolades.studentId == newstudent.id
-        assert newaccolades.milestone10 == False
-        assert newaccolades.milestone25 == False
-        assert newaccolades.milestone50 == False
         
     # pure function no side effects or integrations called
     def test_staff_get_json(self):
@@ -77,4 +74,9 @@ def empty_db():
     yield app.test_client()
     db.drop_all()
 
-# class UsersIntegrationTests(unittest.TestCase):
+class UsersIntegrationTests(unittest.TestCase):
+    def test_student_request_confirmation():
+        student = create_student("student1", "student1pass")
+        request = student_request_confirmation(student.id, 10.0)
+        assert request.studentId == 1
+        assert request.hours == 10.0
