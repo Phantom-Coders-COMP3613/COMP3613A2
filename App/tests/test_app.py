@@ -3,11 +3,12 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from App.main import create_app
 from App.database import db, create_db
-from App.models import Staff, User
+from App.models import Staff, User, Student , Confirmation
 from App.controllers import (
     create_staff,
     create_student,
-    login
+    login,
+    request_confirmation
 )
 
 
@@ -51,4 +52,13 @@ def empty_db():
     yield app.test_client()
     db.drop_all()
 
+def test_student_request_confirmation():
+    hours = 10
+    student_id = 1
+
+    request = request_confirmation(student_id, hours)
+
+    assert request.status == "pending"
+    assert request.hours == "10"
+    assert request.studentId == "1"
 # class UsersIntegrationTests(unittest.TestCase):
