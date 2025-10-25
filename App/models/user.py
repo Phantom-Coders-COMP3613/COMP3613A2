@@ -12,7 +12,6 @@ class User(db.Model):
     __mapper_args__ = {
         'polymorphic_identity': 'user',
         'polymorphic_on': user_type,
-        'with_polymorphic': '*'
     }
     
     def __init__(self, username, password):
@@ -53,18 +52,19 @@ class Student(User):
     
     def get_json(self):
         json_data = super().get_json()
-        json_data['user_type'] = 'customer'
+        json_data['user_type'] = 'student'
         return json_data
     
-    def request_confirm(self,confirmation):
+    def request_confirmation(self, confirmation):
         db.session.add(confirmation)
         db.session.commit()
-        print('Your request has been logged.')
+        print(f'Confirmation {confirmation.confirmationId} has been logged.')
+        return confirmation
 
 class Staff(User):
     __tablename__ = 'staff'
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    staffId = db.Column(db.String(20), unique=True, nullable=False)
+    staffId = db.Column(db.String(20), unique=True)
 
     __mapper_args__ = {
         'polymorphic_identity': 'staff'
@@ -80,6 +80,7 @@ class Staff(User):
     def get_json(self):
         json_data = super().get_json()
         json_data['staff_id'] = self.staffId
+        json_data['user_type'] = 'staff'
         return json_data
     
     def log_confirmation(self, student, confirmation):
@@ -89,8 +90,3 @@ class Staff(User):
         db.session.commit()
 
         print(f'Logged {confirmation.hours} hours for student {student.username}.')
-
-    def deny_confirmation(self, confirmation):
-        confirmation.status = 'denied'
-        db.session.commit()
-        print(f'Confirmation {confirmation.confirmationId} denied.')

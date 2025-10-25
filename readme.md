@@ -32,15 +32,9 @@ $ flask staff create [username: String] [password: String]
 - (EXTRA) Creates a Staff with a Username and Password.
 
 ```bash
-$ flask staff log_confirmation [confirmation_id: int]
+$ flask staff log_confirmation [staffId: String] [confirmation_id: int]
 ```
 - (REQUIRED) Queries the Confirmation confirmation_id, extracts its information and apply the hours worked to the relevant Student hours.
-
-```bash
-$ flask staff deny_confirmation [confirmation_id: int]
-```
-- (REQUIRED) Queries the Confirmation confirmation_id, and deletes the Confirmation from the list of Confirmations.
-
 
 ```bash
 $ flask staff view_confirmations

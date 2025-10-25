@@ -8,4 +8,8 @@ from .leaderboard import leaderboard_view
 
 
 views = [user_views, index_views, auth_views,leaderboard_view] 
+from .confirmation import confirmation_views
+from .accolades import accolades_views
+
+views = [user_views, index_views, auth_views, confirmation_views, accolades_views] 
 # blueprints must be added to this list
