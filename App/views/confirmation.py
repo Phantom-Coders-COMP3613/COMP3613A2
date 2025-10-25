@@ -15,7 +15,7 @@ def log_confirmation_api(confirmationId):
     confirmation = staff_log_confirmation(staff_id=current_user.id, confirmation_id=confirmationId)
     if not confirmation:
         return jsonify({'message': f'Error returning confirmation'}), 400
-    return jsonify({'message': f'Confirmation returned successfully with ID: {confirmation.confirmationId}'}), 200
+    return jsonify({'status': 'success', 'message': f'Confirmation returned successfully with ID: {confirmation.confirmationId}'}), 200
 
 @confirmation_views.route('/api/request', methods=['POST'])
 @login_required(Student)

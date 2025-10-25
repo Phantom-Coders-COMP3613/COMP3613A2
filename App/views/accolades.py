@@ -5,7 +5,7 @@ from App.models import Student, Accolades
 
 
 from App.controllers import(
-    view_accolades, login_required
+    student_view_accolades, login_required
     
 )
 
@@ -22,7 +22,7 @@ def accolades_api():
         return jsonify({'message': f'Invalid Student ID format (must be integer)'}), 400 
     
 
-    accolade = view_accolades(student_id_int) 
+    accolade = student_view_accolades(student_id_int) 
     if not accolade:
         return jsonify({'message': f'Invalid Student ID'}), 401
     elif accolade.milestone50:

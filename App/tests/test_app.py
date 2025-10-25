@@ -11,7 +11,7 @@ from App.controllers import (
     login,
     student_request_confirmation,
     staff_log_confirmation,
-    view_accolades,
+    student_view_accolades,
     view_leaderboard
 )
 
@@ -110,9 +110,6 @@ def empty_db():
         yield app.test_client()
         db.drop_all()
 
-#class UsersIntegrationTests(unittest.TestCase):
-
-
 class TestLeaderboardIntegrationTests:
      
     def test_view_leaderboard_empty(self,empty_db): 
@@ -139,10 +136,27 @@ class TestLeaderboardIntegrationTests:
             ]
             assert results == expected
 class UserIntegrationTests(unittest.TestCase):
+    def test_create_staff(empty_db):
+        """Ensures a staff object is created successfully."""
+        
+        staff = create_staff("test1staff", "test1pass", "S001")
+        assert isinstance(staff, Staff)
+        assert staff.username == "test1staff"
+        assert staff.staffId == "S001"
+        assert staff.user_type == "staff"
+        
+    def test_create_student(empty_db):
+        """Ensures a student object is created successfully."""
+        
+        student = create_student("test2student", "test2pass")
+        assert isinstance(student, Student)
+        assert student.username == "test2student"
+        assert student.user_type == "student"
+    
     def test_student_request_confirmation(empty_db): 
         """Ensures a confirmation object is created with correct 'pending' status."""
         
-        student = create_student("teststudent", "testpass")
+        student = create_student("test3student", "test3pass")
         
         hours = 10.0
         student_id = student.id
@@ -155,8 +169,8 @@ class UserIntegrationTests(unittest.TestCase):
     def test_staff_log_confirmation(empty_db):
         """TEST: Ensures staff can log a student's confirmation and update hours."""
         
-        student = create_student("teststudent2", "testpass2") 
-        staff = create_staff("teststaff", "staffpass", "S000")
+        student = create_student("test4student", "test4pass") 
+        staff = create_staff("test4staff", "staff4pass", "S004")
         
         confirmation = student_request_confirmation(student.id, 15.0)
         logged_confirmation = staff_log_confirmation(staff.id, confirmation.confirmationId)
@@ -170,7 +184,7 @@ class UserIntegrationTests(unittest.TestCase):
         """TEST: Ensures the 10-hour milestone is awarded after logging 12 hours."""
         
         student = create_student("Jane_10", "janepass") 
-        staff = create_staff("Staff_10", "staffpass", "S001")
+        staff = create_staff("test5staff", "staff5pass", "S005")
         db.session.add_all([student, staff])
         db.session.commit()
         
@@ -179,17 +193,16 @@ class UserIntegrationTests(unittest.TestCase):
         
         staff_log_confirmation(staff.id, confirmation.confirmationId)
 
-        accolades_data = view_accolades(student.id)
+        accolades_data = student_view_accolades(student.id)
         assert accolades_data.milestone10 == True
         assert accolades_data.milestone25 == False
         assert accolades_data.milestone50 == False
-
 
     def test_milestone_25_award(empty_db):
         """TEST: Ensures the 25-hour milestone is awarded after logging 25 hours."""
         
         student = create_student("Jane_25", "janepass") 
-        staff = create_staff("Staff_25", "staffpass", "S002")
+        staff = create_staff("test6staff", "staff6pass", "S006")
         db.session.add_all([student, staff])
         db.session.commit()
         
@@ -199,17 +212,16 @@ class UserIntegrationTests(unittest.TestCase):
         staff_log_confirmation(staff.id, confirmation.confirmationId)
 
     
-        accolades_data = view_accolades(student.id)
+        accolades_data = student_view_accolades(student.id)
         assert accolades_data.milestone10 == True 
         assert accolades_data.milestone25 == True
         assert accolades_data.milestone50 == False
-
 
     def test_milestone_50_award(empty_db):
         """TEST: Ensures the 50-hour milestone is awarded after logging 50 hours."""
         
         student = create_student("Jane_50", "janepass") 
-        staff = create_staff("Staff_50", "staffpass", "S003")
+        staff = create_staff("test7staff", "staff7pass", "S007")
         db.session.add_all([student, staff])
         db.session.commit()
         
@@ -218,7 +230,7 @@ class UserIntegrationTests(unittest.TestCase):
         
         staff_log_confirmation(staff.id, confirmation.confirmationId)
 
-        accolades_data = view_accolades(student.id)
+        accolades_data = student_view_accolades(student.id)
         assert accolades_data.milestone10 == True
         assert accolades_data.milestone25 == True
         assert accolades_data.milestone50 == True

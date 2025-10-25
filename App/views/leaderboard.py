@@ -7,8 +7,6 @@ from App.models import Student
 leaderboard_view = Blueprint('leaderboard_view', __name__)
 
 @leaderboard_view.route('/api/view_leaderboard', methods=['GET'])
-
-
 def leaderboard():
     data = view_leaderboard()
     return jsonify(data), 200

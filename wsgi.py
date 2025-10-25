@@ -4,7 +4,7 @@ from flask.cli import with_appcontext, AppGroup
 from App.database import db, get_migrate
 from App.models import User
 from App.main import create_app
-from App.controllers import ( create_staff, create_student, initialize, student_request_confirmation, view_leaderboard, view_accolades, staff_log_confirmation, view_confirmations )
+from App.controllers import ( create_staff, create_student, initialize, student_request_confirmation, view_leaderboard, student_view_accolades, staff_log_confirmation, view_confirmations )
 
 
 # This commands file allow you to create convenient CLI commands for testing controllers
@@ -44,7 +44,7 @@ def request_confirmation_command(student_id, hours):
 @student_cli.command("view_accolades", help="View accolades (10/25/50 hours milestones)")
 @click.argument("student_id")
 def view_accolades_command(student_id):
-    accolade = view_accolades(student_id)
+    accolade = student_view_accolades(student_id)
     if accolade.milestone50:
         print("Milestone 50 hours achieved!")
     elif accolade.milestone25:
@@ -58,9 +58,7 @@ def view_accolades_command(student_id):
 @student_cli.command("view_leaderboard", help="View Student Leaderboard")
 def view_leaderboard_command():
     leaderboard = view_leaderboard()
-    print("Student Leaderboard:")
-    for student in leaderboard:
-        print(f"{student.username}: {student.hours} hours")
+    print(leaderboard)
 
 app.cli.add_command(student_cli)
 
