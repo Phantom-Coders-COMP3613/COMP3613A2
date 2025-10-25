@@ -10,6 +10,7 @@ from App.controllers import (
     login
 )
 
+from App.controllers.leaderboard import view_leaderboard
 
 LOGGER = logging.getLogger(__name__)
 
@@ -38,6 +39,32 @@ class UserUnitTests(unittest.TestCase):
         user = User("bob", password)
         assert user.check_password(password)
 
+    def test_view_leaderboard_returns_list(self):
+        # Create fake students in memory 
+        class Student:
+            def __init__(self, username, hours):
+                self.username = username
+                self.hours = hours
+        students = [
+            Student("alice", 10.0),
+            Student("bob", 20.0),
+            Student("charlie", 15.0)
+        ]
+        results = view_leaderboard(students)  # Pass fake data
+        print(results)
+        expected = [
+            {"username": "bob", "hours": 20.0},
+            {"username": "charlie", "hours": 15.0},
+            {"username": "alice", "hours": 10.0}
+        ]
+       
+        self.assertEqual(results, expected)
+        self.assertIsInstance(results, list)  # Extra check for return type
+    
+    
+
+    
+
 '''
     Integration Tests
 '''
@@ -47,8 +74,36 @@ class UserUnitTests(unittest.TestCase):
 @pytest.fixture(autouse=True, scope="module")
 def empty_db():
     app = create_app({'TESTING': True, 'SQLALCHEMY_DATABASE_URI': 'sqlite:///test.db'})
-    create_db()
-    yield app.test_client()
-    db.drop_all()
+    with app.app_context():
+        create_db()
+        yield app.test_client()
+        db.drop_all()
 
-# class UsersIntegrationTests(unittest.TestCase):
+#class UsersIntegrationTests(unittest.TestCase):
+
+
+class TestLeaderboardIntegrationTests:
+     
+    def test_view_leaderboard_empty(self,empty_db): 
+            results = view_leaderboard()
+            assert results == [] #assuming db is empty
+
+    
+    def test_view_leaderboard_with_data(self):
+        
+    # Add test students to the database
+            student1 = create_student("alice", "pass1")
+            student1.hours = 10
+            student2 = create_student("bob", "pass2")
+            student2.hours = 20
+            student3 = create_student("charlie", "pass3")
+            student3.hours = 15
+            db.session.commit()
+
+            results = view_leaderboard()
+            expected = [
+            {"username": "bob", "hours": 20},
+            {"username": "charlie", "hours": 15},
+            {"username": "alice", "hours": 10}
+            ]
+            assert results == expected
