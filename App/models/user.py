@@ -60,6 +60,16 @@ class Student(User):
         db.session.commit()
         print(f'Confirmation {confirmation.confirmationId} has been logged.')
         return confirmation
+    
+    def view_accolades(self, accolades):
+        if self.hours >= 50 and not accolades.milestone50:
+            accolades.milestone50 = True
+        if self.hours >= 25 and not accolades.milestone25:
+            accolades.milestone25 = True
+        if self.hours >= 10 and not accolades.milestone10:
+            accolades.milestone10 = True
+        db.session.commit()
+        return accolades
 
 class Staff(User):
     __tablename__ = 'staff'

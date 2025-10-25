@@ -11,7 +11,7 @@ from App.controllers import (
     login,
     student_request_confirmation,
     staff_log_confirmation,
-    view_accolades,
+    student_view_accolades,
     view_leaderboard
 )
 
@@ -110,9 +110,6 @@ def empty_db():
         yield app.test_client()
         db.drop_all()
 
-#class UsersIntegrationTests(unittest.TestCase):
-
-
 class TestLeaderboardIntegrationTests:
      
     def test_view_leaderboard_empty(self,empty_db): 
@@ -196,7 +193,7 @@ class UserIntegrationTests(unittest.TestCase):
         
         staff_log_confirmation(staff.id, confirmation.confirmationId)
 
-        accolades_data = view_accolades(student.id)
+        accolades_data = student_view_accolades(student.id)
         assert accolades_data.milestone10 == True
         assert accolades_data.milestone25 == False
         assert accolades_data.milestone50 == False
@@ -215,7 +212,7 @@ class UserIntegrationTests(unittest.TestCase):
         staff_log_confirmation(staff.id, confirmation.confirmationId)
 
     
-        accolades_data = view_accolades(student.id)
+        accolades_data = student_view_accolades(student.id)
         assert accolades_data.milestone10 == True 
         assert accolades_data.milestone25 == True
         assert accolades_data.milestone50 == False
@@ -233,7 +230,7 @@ class UserIntegrationTests(unittest.TestCase):
         
         staff_log_confirmation(staff.id, confirmation.confirmationId)
 
-        accolades_data = view_accolades(student.id)
+        accolades_data = student_view_accolades(student.id)
         assert accolades_data.milestone10 == True
         assert accolades_data.milestone25 == True
         assert accolades_data.milestone50 == True
